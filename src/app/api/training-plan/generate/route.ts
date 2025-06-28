@@ -254,7 +254,7 @@ const generatePlan = (planType: string, totalTrainingWeeks: number, experienceLe
 
     const newPlan = generatePlan(planType, planDuration, experienceLevel, paces, selectedFocusAreas);
 
-    if ((newPlan as { message: string }).message) {
+    if (typeof newPlan === 'object' && newPlan !== null && 'message' in newPlan) {
       return NextResponse.json(newPlan, { status: 400 });
     }
 
