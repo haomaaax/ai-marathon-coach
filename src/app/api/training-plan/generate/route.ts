@@ -255,7 +255,7 @@ const generatePlan = (planType: string, totalTrainingWeeks: number, experienceLe
     const newPlan = generatePlan(planType, planDuration, experienceLevel, paces, selectedFocusAreas);
 
     if (typeof newPlan === 'object' && newPlan !== null && 'message' in newPlan) {
-      return NextResponse.json(newPlan, { status: 400 });
+      return NextResponse.json(newPlan as { message: string }, { status: 400 });
     }
 
     const plans = JSON.parse(fs.readFileSync(trainingPlansFilePath, 'utf-8'));
