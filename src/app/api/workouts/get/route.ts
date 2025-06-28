@@ -14,8 +14,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const workouts = JSON.parse(fs.readFileSync(workoutsFilePath, 'utf-8'));
-    const userWorkouts = workouts.filter((workout: any) => workout.userId === token.sub);
+    const workouts: { userId: string }[] = JSON.parse(fs.readFileSync(workoutsFilePath, 'utf-8'));
+    const userWorkouts = workouts.filter((workout) => workout.userId === token.sub);
 
     return NextResponse.json({ workouts: userWorkouts }, { status: 200 });
   } catch (error) {

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 interface TrainingPlanFormProps {
-  onPlanGenerated: (plan: any) => void;
+  onPlanGenerated: (plan: { week: number; phase: string; workouts: string[] }[]) => void;
   planType: 'marathon' | 'half-marathon';
 }
 
@@ -11,7 +11,7 @@ interface TrainingPlanFormProps {
 const generateTimeOptions = (startHours: number, startMinutes: number, endHours: number, intervalMinutes: number): string[] => {
   const times: string[] = ['']; // Empty option for no selection
   for (let h = startHours; h <= endHours; h++) {
-    let mStart = (h === startHours) ? startMinutes : 0; // Start minutes from specified for the first hour, else from 0
+    const mStart = (h === startHours) ? startMinutes : 0; // Start minutes from specified for the first hour, else from 0
     for (let m = mStart; m < 60; m += intervalMinutes) {
       const time = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:00`;
       // Stop generating if we exceed the end hour or if it's the end hour and we've passed 00 minutes

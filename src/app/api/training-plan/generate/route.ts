@@ -20,9 +20,16 @@ const formatSecondsToPace = (secondsPerKm: number): string => {
   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}/km`;
 };
 
+interface Paces {
+  marathonPace: string;
+  easyPace: string;
+  tempoPace: string;
+  intervalPace: string;
+}
+
 // Simplified pace calculation based on race time
-const calculatePaces = (raceTimeSeconds: number, raceDistanceKm: number, experienceLevel: string) => {
-  let targetRacePaceSecondsPerKm = raceTimeSeconds / raceDistanceKm;
+const calculatePaces = (raceTimeSeconds: number, raceDistanceKm: number, experienceLevel: string): Paces => {
+  const targetRacePaceSecondsPerKm = raceTimeSeconds / raceDistanceKm;
 
   let easyPaceFactor = 1.30; // 30% slower than target race pace
   let tempoPaceFactor = 1.05; // 5% slower than target race pace
@@ -68,7 +75,7 @@ export async function POST(request: Request) {
       paces = calculatePaces(halfMarathonTimeSeconds, 21.0975, experienceLevel);
     }
 
-    const generatePlan = (planType: string, totalTrainingWeeks: number, experienceLevel: string, paces: any, focusAreas: string[]) => {
+    const generatePlan = (planType: string, totalTrainingWeeks: number, experienceLevel: string, paces: Paces | null, focusAreas: string[]) => {
       const plan: any[] = [];
 
       // Define phase lengths (can be adjusted)
@@ -241,7 +248,7 @@ export async function POST(request: Request) {
 
     const newPlan = generatePlan(planType, planDuration, experienceLevel, paces, selectedFocusAreas);
 
-    if ((newPlan as any).message) {
+    if ((newPlan as { message: string }).message) {
       return NextResponse.json(newPlan, { status: 400 });
     }
 

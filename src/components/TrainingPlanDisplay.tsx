@@ -3,7 +3,7 @@
 import React from 'react';
 
 interface TrainingPlanDisplayProps {
-  plan: any[];
+  plan: { week: number; phase: string; workouts: string[] }[];
 }
 
 export default function TrainingPlanDisplay({ plan }: TrainingPlanDisplayProps) {

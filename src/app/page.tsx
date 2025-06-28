@@ -5,9 +5,15 @@ import { useState } from 'react';
 import TrainingPlanForm from '../components/TrainingPlanForm';
 import TrainingPlanDisplay from '../components/TrainingPlanDisplay';
 
+interface WorkoutPlanWeek {
+  week: number;
+  phase: string;
+  workouts: string[];
+}
+
 export default function Home() {
   const { data: session } = useSession();
-  const [trainingPlan, setTrainingPlan] = useState<any[]>([]);
+  const [trainingPlan, setTrainingPlan] = useState<WorkoutPlanWeek[]>([]);
   const [selectedPlanType, setSelectedPlanType] = useState<'marathon' | 'half-marathon'>('marathon');
 
   return (
