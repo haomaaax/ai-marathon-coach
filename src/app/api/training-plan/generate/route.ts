@@ -267,12 +267,6 @@ const generatePlan = (planType: string, totalTrainingWeeks: number, experienceLe
       return NextResponse.json(newPlan, { status: 400 });
     }
 
-    
-
-const plans: SavedTrainingPlan[] = JSON.parse(fs.readFileSync(trainingPlansFilePath, 'utf-8'));
-    plans.push({ id: Date.now(), planType, planDuration, experienceLevel, plan: newPlan });
-    fs.writeFileSync(trainingPlansFilePath, JSON.stringify(plans, null, 2));
-
     return NextResponse.json({ message: 'Training plan generated successfully', plan: newPlan }, { status: 200 });
   } catch (error) {
     console.error('Training plan generation error:', error);
