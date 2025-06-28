@@ -20,6 +20,16 @@ const formatSecondsToPace = (secondsPerKm: number): string => {
   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}/km`;
 };
 
+interface WorkoutPlanWeek {
+  week: number;
+  phase: string;
+  workouts: string[];
+}
+
+function isErrorMessage(plan: WorkoutPlanWeek[] | { message: string }): plan is { message: string } {
+  return typeof plan === 'object' && plan !== null && 'message' in plan;
+}
+
 interface Paces {
   marathonPace: string;
   easyPace: string;
@@ -254,8 +264,8 @@ const generatePlan = (planType: string, totalTrainingWeeks: number, experienceLe
 
     const newPlan = generatePlan(planType, planDuration, experienceLevel, paces, selectedFocusAreas);
 
-    if (typeof newPlan === 'object' && newPlan !== null && 'message' in newPlan) {
-      return NextResponse.json(newPlan as { message: string }, { status: 400 });
+    if (isErrorMessage(newPlan)) {
+      return NextResponse.json(newPlan, { status: 400 });
     }
 
     const plans = JSON.parse(fs.readFileSync(trainingPlansFilePath, 'utf-8'));
