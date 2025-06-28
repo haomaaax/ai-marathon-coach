@@ -268,7 +268,15 @@ const generatePlan = (planType: string, totalTrainingWeeks: number, experienceLe
       return NextResponse.json(newPlan, { status: 400 });
     }
 
-    const plans = JSON.parse(fs.readFileSync(trainingPlansFilePath, 'utf-8'));
+    interface SavedTrainingPlan {
+  id: number;
+  planType: string;
+  planDuration: number;
+  experienceLevel: string;
+  plan: WorkoutPlanWeek[];
+}
+
+const plans: SavedTrainingPlan[] = JSON.parse(fs.readFileSync(trainingPlansFilePath, 'utf-8'));
     plans.push({ id: Date.now(), planType, planDuration, experienceLevel, plan: newPlan });
     fs.writeFileSync(trainingPlansFilePath, JSON.stringify(plans, null, 2));
 
