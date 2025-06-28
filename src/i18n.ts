@@ -58,7 +58,7 @@ i18n
       },
       'zh-TW': {
         translation: {
-          "marathon_app_title": "馬拉松訓練小精靈",
+          "marathon_app_title": "馬拉松訓練神隊友",
           "marathon_app_subtitle": "量身訂做最適合你的馬拉松訓練課表",
           "welcome_message": "歡迎，{{name}}！",
           "sign_out": "登出",
@@ -79,7 +79,8 @@ i18n
           "focus_areas": "重點訓練區域 (選擇您想進步的方面)",
           "speed": "間歇跑",
           "endurance": "耐力跑",
-          "long_runs": "長距離跑",
+          "long_runs": "長跑",
+          "long runs": "長距離跑",
           "hills": "山坡跑",
           "recovery": "恢復跑",
           "consistency": "均速跑",
