@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface TrainingPlanFormProps {
   onPlanGenerated: (plan: { week: number; phase: string; workouts: string[] }[]) => void;
@@ -36,6 +37,7 @@ export default function TrainingPlanForm({ onPlanGenerated, planType }: Training
   const [halfMarathonTime, setHalfMarathonTime] = useState('');
   const [selectedFocusAreas, setSelectedFocusAreas] = useState<string[]>([]);
   const [message, setMessage] = useState('');
+  const { t } = useTranslation();
 
   const handleFocusAreaChange = (area: string) => {
     setSelectedFocusAreas(prev =>
@@ -66,28 +68,28 @@ export default function TrainingPlanForm({ onPlanGenerated, planType }: Training
       const data = await response.json();
 
       if (response.ok) {
-        setMessage(data.message);
+        setMessage(t(data.message));
         onPlanGenerated(data.plan);
       } else {
-        setMessage(data.message || 'Failed to generate plan.');
+        setMessage(t(data.message || 'plan_generation_failed'));
       }
     } catch (error) {
       console.error('Plan generation failed:', error);
-      setMessage('Plan generation failed. Please try again.');
+      setMessage(t('plan_generation_failed'));
     }
   };
 
   const durationOptions = [];
   for (let i = 8; i <= 20; i++) {
-    durationOptions.push(<option key={i} value={i}>{i} Weeks</option>);
+    durationOptions.push(<option key={i} value={i}>{i} {t('weeks')}</option>);
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 p-6 bg-white rounded-lg shadow-md border border-gray-200">
-      <h2 className="text-2xl font-bold text-gray-800 text-center">Generate Training Plan</h2>
+      <h2 className="text-2xl font-bold text-gray-800 text-center">{t('generate_plan_title')}</h2>
       {message && <p className="text-center text-sm text-red-500">{message}</p>}
       <div>
-        <label htmlFor="planDuration" className="block text-sm font-medium text-gray-700 mb-1">Plan Duration</label>
+        <label htmlFor="planDuration" className="block text-sm font-medium text-gray-700 mb-1">{t('plan_duration')}</label>
         <select
           id="planDuration"
           value={planDuration}
@@ -99,7 +101,7 @@ export default function TrainingPlanForm({ onPlanGenerated, planType }: Training
         </select>
       </div>
       <div>
-        <label htmlFor="experienceLevel" className="block text-sm font-medium text-gray-700 mb-1">Experience Level</label>
+        <label htmlFor="experienceLevel" className="block text-sm font-medium text-gray-700 mb-1">{t('experience_level')}</label>
         <select
           id="experienceLevel"
           value={experienceLevel}
@@ -107,21 +109,21 @@ export default function TrainingPlanForm({ onPlanGenerated, planType }: Training
           className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-base text-gray-900"
           required
         >
-          <option value="Beginner">Beginner</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Advanced">Advanced</option>
+          <option value="Beginner">{t('beginner')}</option>
+          <option value="Intermediate">{t('intermediate')}</option>
+          <option value="Advanced">{t('advanced')}</option>
         </select>
       </div>
       {planType === 'marathon' && (
         <div>
-          <label htmlFor="marathonTime" className="block text-sm font-medium text-gray-700 mb-1">Past Marathon Time (Optional)</label>
+          <label htmlFor="marathonTime" className="block text-sm font-medium text-gray-700 mb-1">{t('past_marathon_time')}</label>
           <select
             id="marathonTime"
             value={marathonTime}
             onChange={(e) => setMarathonTime(e.target.value)}
             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-base text-gray-900"
           >
-            <option value="">Select a time</option>
+            <option value="">{t('select_a_time')}</option>
             {marathonTimes.map((time) => (
               <option key={time} value={time}>{time}</option>
             ))}
@@ -130,14 +132,14 @@ export default function TrainingPlanForm({ onPlanGenerated, planType }: Training
       )}
       {planType === 'half-marathon' && (
         <div>
-          <label htmlFor="halfMarathonTime" className="block text-sm font-medium text-gray-700 mb-1">Past Half Marathon Time (Optional)</label>
+          <label htmlFor="halfMarathonTime" className="block text-sm font-medium text-gray-700 mb-1">{t('past_half_marathon_time')}</label>
           <select
             id="halfMarathonTime"
             value={halfMarathonTime}
             onChange={(e) => setHalfMarathonTime(e.target.value)}
             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-base text-gray-900"
           >
-            <option value="">Select a time</option>
+            <option value="">{t('select_a_time')}</option>
             {halfMarathonTimes.map((time) => (
               <option key={time} value={time}>{time}</option>
             ))}
@@ -147,7 +149,7 @@ export default function TrainingPlanForm({ onPlanGenerated, planType }: Training
 
       {/* Focus Areas Selection */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Focus Areas (Select areas you want to improve)</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">{t('focus_areas')}</label>
         <div className="mt-1 grid grid-cols-2 sm:grid-cols-3 gap-2">
           {focusAreasOptions.map(area => (
             <div key={area} className="flex items-center">
@@ -158,7 +160,7 @@ export default function TrainingPlanForm({ onPlanGenerated, planType }: Training
                 onChange={() => handleFocusAreaChange(area)}
                 className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <label htmlFor={`focus-area-${area}`} className="ml-2 text-sm text-gray-700">{area}</label>
+              <label htmlFor={`focus-area-${area}`} className="ml-2 text-sm text-gray-700">{t(area.toLowerCase())}</label>
             </div>
           ))}
         </div>
@@ -168,7 +170,7 @@ export default function TrainingPlanForm({ onPlanGenerated, planType }: Training
         type="submit"
         className="w-full py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-semibold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-300 ease-in-out transform hover:scale-105"
       >
-        Generate Plan
+        {t('generate_plan_button')}
       </button>
     </form>
   );
