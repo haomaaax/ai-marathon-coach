@@ -67,7 +67,7 @@ const calculatePaces = (raceTimeSeconds: number, raceDistanceKm: number, experie
   };
 };
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const { planType, planDuration, experienceLevel, marathonTime, halfMarathonTime, selectedFocusAreas } = await request.json();
 
