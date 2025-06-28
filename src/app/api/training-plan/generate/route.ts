@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-const trainingPlansFilePath = path.resolve(process.cwd(), 'data', 'trainingPlans.json');
+
 
 // Helper to convert HH:MM:SS to total seconds
 const parseTimeToSeconds = (timeString: string): number | null => {
@@ -268,13 +268,7 @@ const generatePlan = (planType: string, totalTrainingWeeks: number, experienceLe
       return NextResponse.json(newPlan, { status: 400 });
     }
 
-    interface SavedTrainingPlan {
-  id: number;
-  planType: string;
-  planDuration: number;
-  experienceLevel: string;
-  plan: WorkoutPlanWeek[];
-}
+    
 
 const plans: SavedTrainingPlan[] = JSON.parse(fs.readFileSync(trainingPlansFilePath, 'utf-8'));
     plans.push({ id: Date.now(), planType, planDuration, experienceLevel, plan: newPlan });
