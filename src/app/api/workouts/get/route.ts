@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { getToken } from 'next-auth/jwt';
@@ -6,7 +6,7 @@ import { getToken } from 'next-auth/jwt';
 const workoutsFilePath = path.resolve(process.cwd(), 'data', 'workouts.json');
 const secret = process.env.NEXTAUTH_SECRET;
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const token = await getToken({ req: request, secret });
 
