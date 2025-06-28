@@ -65,7 +65,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Plan type, duration, and experience level are required' }, { status: 400 });
     }
 
-    let paces: any = null;
+    let paces: Paces | null = null;
     const marathonTimeSeconds = marathonTime ? parseTimeToSeconds(marathonTime) : null;
     const halfMarathonTimeSeconds = halfMarathonTime ? parseTimeToSeconds(halfMarathonTime) : null;
 
@@ -75,7 +75,13 @@ export async function POST(request: Request) {
       paces = calculatePaces(halfMarathonTimeSeconds, 21.0975, experienceLevel);
     }
 
-    const generatePlan = (planType: string, totalTrainingWeeks: number, experienceLevel: string, paces: Paces | null, focusAreas: string[]) => {
+    interface WorkoutPlanWeek {
+  week: number;
+  phase: string;
+  workouts: string[];
+}
+
+const generatePlan = (planType: string, totalTrainingWeeks: number, experienceLevel: string, paces: Paces | null, focusAreas: string[]): WorkoutPlanWeek[] | { message: string } => {
       const plan: any[] = [];
 
       // Define phase lengths (can be adjusted)
